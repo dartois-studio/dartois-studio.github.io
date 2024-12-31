@@ -1844,6 +1844,7 @@ input, select, textarea {
     height: 2em; /* Ajuste la taille du logo */
     width: auto; /* Laisse l'aspect du logo inchangé */
     margin-right: 0.5em; /* Espace entre le logo et le titre */
+    margin-left: 1em; /* Décale le logo vers la droite */
 }
 
 #header h1 {
