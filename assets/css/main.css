@@ -72,6 +72,30 @@ input, select, textarea {
 	appearance: none;
 }
 
+/* Styles spécifiques pour le header - GUIGUI */
+#header {
+    display: flex;
+    align-items: center;  /* Aligne verticalement le logo et le titre */
+    justify-content: flex-start; /* Aligne à gauche */
+    padding: 10px;
+}
+
+#header .logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#header .logo {
+    height: 40px;  /* Ajuste cette valeur selon la taille du logo souhaitée */
+    margin-right: 10px;  /* Espace entre le logo et le titre */
+}
+
+#header .site-title {
+    font-size: 2em;  /* Ajuste la taille du titre */
+    margin: 0;
+    line-height: 1;  /* Assure un bon alignement vertical avec le logo */
+}
+
 /* Basic */
 
 	@-ms-viewport {
