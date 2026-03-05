@@ -1066,7 +1066,7 @@ input, select, textarea {
 		transition: transform 0.5s ease;
 		-webkit-overflow-scrolling: touch;
 		background: rgba(36, 38, 41, 0.975);
-		bottom: 4em;
+		 bottom: 0; 
 		left: 0;
 		max-height: calc(80vh - 4em);
 		overflow-y: auto;
@@ -2172,6 +2172,93 @@ body {
   transform: translateY(-100%);
   pointer-events: none;
 }
+
+/* Contact cards (drawer footer) */
+
+.contact-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  margin-top: 1.25em;
+}
+
+.contact-card {
+  border: 0;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  gap: 1em;
+
+  padding: 0.95em 1.05em;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+
+  color: #ffffff !important;
+
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.contact-icon i {
+  font-size: 1.25em;
+}
+
+.contact-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.contact-title {
+  font-size: 0.95em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.contact-handle {
+  font-size: 1.05em;
+  font-weight: 400;
+  opacity: 0.95;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-arrow {
+  margin-left: auto;
+  opacity: 0.5;
+}
+
+.contact-card:hover .contact-arrow {
+  opacity: 0.85;
+}
+
+
+
+
 
 /* Footer */
 
