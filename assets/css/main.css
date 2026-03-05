@@ -1481,12 +1481,12 @@ input, select, textarea {
 		z-index: 10002;
 	}
 
-		body.is-preload #header {
+		/*body.is-preload #header {
 			/*-moz-transform: translateY(4em);
 			-webkit-transform: translateY(4em);
 			-ms-transform: translateY(4em);
-			 transform: translateY(4em); */
-		}
+			 transform: translateY(4em); 
+		}*/
 
 		#header h1 {
 			color: #a0a0a1;
