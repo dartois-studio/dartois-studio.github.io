@@ -1482,10 +1482,10 @@ input, select, textarea {
 	}
 
 		body.is-preload #header {
-			-moz-transform: translateY(4em);
+			/*-moz-transform: translateY(4em);
 			-webkit-transform: translateY(4em);
 			-ms-transform: translateY(4em);
-			transform: translateY(4em);
+			 transform: translateY(4em); */
 		}
 
 		#header h1 {
@@ -2039,18 +2039,15 @@ input, select, textarea {
 		}
 
 /* MODIFS NEW GP */
-/* Zoom léger au survol (template Multiverse: image en background) */
-
+/* Zoom propre (ne casse pas le cover) */
 #main .thumb > a.image {
-	will-change: background-size;
-  transition: background-size 0.35s ease;
-  background-size: 100%;
+  transition: transform 0.35s ease;
+  transform: scale(1);
+  will-change: transform;
 }
 
-
-
 #main .thumb:hover > a.image {
-  background-size: 105%;
+  transform: scale(1.05);
 }
 
 /* Header custom (fond blanc, logo + titre à gauche, icône menu à droite) */
@@ -2098,6 +2095,29 @@ body {
   letter-spacing: 0.12em;
   font-size: 1.25em;
   color: #111;
+}
+
+#header .header-nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+#header .header-nav ul {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+#header .header-nav li {
+  display: flex;
+  align-items: center;
+}
+
+#header .header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #header .header-nav ul {
