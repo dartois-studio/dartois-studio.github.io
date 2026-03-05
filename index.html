@@ -20,13 +20,23 @@
 
 				<!-- Header -->
 					<header id="header">
-						<h1><a href="index.html"><strong>Dartois Studio</strong> by Guillaume Plaisant</a></h1>
-						<nav>
-							<ul>
-								<li><a href="#footer" class="icon solid fa-info-circle">About</a></li>
-							</ul>
-						</nav>
-					</header>
+  <div class="brand">
+    <a href="index.html" class="brand-link">
+      <img src="images/dar-studio_transparent.png" alt="Dartois Studio logo" class="brand-logo" />
+      <span class="brand-name">DARTOIS STUDIO</span>
+    </a>
+  </div>
+
+  <nav class="header-nav" aria-label="Menu">
+    <ul>
+      <li>
+        <a href="#footer" class="header-icon" aria-label="Ouvrir le menu">
+          <i data-lucide="menu"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
 
 				<!-- Main -->
 					<div id="main">
@@ -143,6 +153,10 @@
 			</div>
 
 		<!-- Scripts -->
+		 <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.poptrox.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>

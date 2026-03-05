@@ -2038,6 +2038,121 @@ input, select, textarea {
 
 		}
 
+/* MODIFS NEW GP */
+/* Zoom léger au survol (template Multiverse: image en background) */
+
+#main .thumb > a.image {
+	will-change: background-size;
+  transition: background-size 0.35s ease;
+  background-size: 100%;
+}
+
+
+
+#main .thumb:hover > a.image {
+  background-size: 105%;
+}
+
+/* Header custom (fond blanc, logo + titre à gauche, icône menu à droite) */
+body {
+  padding: 5em 0 0 0; /* on libère de la place en haut (header fixed) */
+}
+
+#header {
+  position: fixed;
+  top: 0;
+  bottom: auto;
+
+  height: 5em;
+  line-height: normal;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  padding: 0 1.5em;
+
+  z-index: 10002;
+}
+
+#header h1 { display: none; } /* au cas où ton ancien h1 traîne encore */
+
+#header .brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  border: 0;
+  color: #111;
+  text-decoration: none;
+}
+
+#header .brand-logo {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+#header .brand-name {
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-size: 1.25em;
+  color: #111;
+}
+
+#header .header-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#header .header-icon {
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+
+  color: #111;
+  text-decoration: none;
+}
+
+#header .header-icon:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Taille de l’icône lucide */
+#header .header-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Header: disparaît au scroll, réapparaît si souris en haut */
+
+body {
+  /* garde un footer, et laisse la place au header en haut */
+  padding: 5em 0 4em 0;
+}
+
+/* Assure que le header est bien en haut (ton template le met en bas par défaut) */
+#header {
+  top: 0;
+  bottom: auto;
+
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: opacity, transform;
+}
+
+/* État caché */
+#header.is-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
 /* Footer */
 
 	#footer .copyright {

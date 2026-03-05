@@ -158,6 +158,54 @@
 	// Header.
 		var $header = $('#header');
 
+		// Hide on scroll, show only when cursor is at the very top of the page.
+(function() {
+  var HOVER_REVEAL_Y = 24; // px depuis le haut
+  var SCROLL_HIDE_Y = 10;  // px de scroll pour cacher
+  var lastScrollTop = 0;
+
+  function hideHeader() {
+    $header.addClass('is-hidden');
+  }
+
+  function showHeader() {
+    $header.removeClass('is-hidden');
+  }
+
+  // Au scroll: on cache dès qu'on descend, on montre seulement si on revient tout en haut.
+  $window.on('scroll', function() {
+    var st = $window.scrollTop();
+
+    if (st <= 0) {
+      showHeader();
+      lastScrollTop = st;
+      return;
+    }
+
+    // Sur desktop: cache dès qu'on a scrollé.
+    if (!$body.hasClass('touch')) {
+      if (st > SCROLL_HIDE_Y) hideHeader();
+      lastScrollTop = st;
+      return;
+    }
+
+    // Sur mobile/touch (pas de curseur): petite logique utile
+    if (st > lastScrollTop && st > SCROLL_HIDE_Y) hideHeader();  // scroll down
+    else showHeader();                                           // scroll up
+    lastScrollTop = st;
+  });
+
+  // Desktop: réaffiche uniquement si le curseur est dans la zone tout en haut
+  $(document).on('mousemove', function(e) {
+    if ($body.hasClass('touch')) return;
+    if (e.clientY <= HOVER_REVEAL_Y) showHeader();
+  });
+
+  // État initial
+  if ($window.scrollTop() > SCROLL_HIDE_Y) hideHeader();
+})();
+
+
 		// Links.
 			$header.find('a').each(function() {
 
