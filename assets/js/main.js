@@ -284,6 +284,122 @@
 
 			});
 
+		// Filters.
+			(function() {
+
+				var $filterBar = $('#gallery-filters');
+
+				if ($filterBar.length === 0 || $main.length === 0)
+					return;
+
+				var $projects = $main.children('.thumb'),
+					$filterButtons = $filterBar.find('[data-filter-type][data-filter-value]'),
+					activeFilter = {
+						type: 'family',
+						value: 'all'
+					};
+
+				function normalizeValue(value) {
+					return String(value || '').toLowerCase().trim();
+				}
+
+				function getProjectTags($project) {
+					var rawTags = normalizeValue($project.attr('data-tags'));
+
+					if (!rawTags)
+						return [];
+
+					return rawTags.split(',').map(function(tag) {
+						return normalizeValue(tag);
+					});
+				}
+
+				function projectMatches($project, filter) {
+					var family = normalizeValue($project.attr('data-family')),
+						tags = getProjectTags($project);
+
+					if (filter.value === 'all')
+						return true;
+
+					if (filter.type === 'family')
+						return family === filter.value;
+
+					if (filter.type === 'tag')
+						return tags.indexOf(filter.value) !== -1;
+
+					return true;
+				}
+
+				function updateActiveStates() {
+					$filterButtons.removeClass('is-active');
+
+					$filterButtons.each(function() {
+						var $button = $(this),
+							type = normalizeValue($button.attr('data-filter-type')),
+							value = normalizeValue($button.attr('data-filter-value'));
+
+						if (type === activeFilter.type && value === activeFilter.value)
+							$button.addClass('is-active');
+
+						if (activeFilter.value === 'all' && value === 'all')
+							$button.addClass('is-active');
+					});
+
+					$main.find('.thumb-tag').removeClass('is-active');
+
+					if (activeFilter.type === 'tag') {
+						$main.find('.thumb-tag[data-filter-value="' + activeFilter.value + '"]').addClass('is-active');
+					}
+				}
+
+				function applyFilter(type, value) {
+					activeFilter = {
+						type: normalizeValue(type),
+						value: normalizeValue(value)
+					};
+
+					if (!activeFilter.value)
+						activeFilter.value = 'all';
+
+					if (activeFilter.value === 'all')
+						activeFilter.type = 'family';
+
+					$projects.each(function() {
+						var $project = $(this),
+							isVisible = projectMatches($project, activeFilter);
+
+						$project.toggleClass('thumb-is-hidden', !isVisible);
+					});
+
+					updateActiveStates();
+				}
+
+				$filterBar.on('click', '[data-filter-type][data-filter-value]', function() {
+					var $button = $(this);
+
+					applyFilter($button.attr('data-filter-type'), $button.attr('data-filter-value'));
+				});
+
+				$main.on('click', '.thumb-tag[data-filter-type="tag"][data-filter-value]', function(event) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					var $tag = $(this);
+
+					applyFilter('tag', $tag.attr('data-filter-value'));
+
+					if ($filterBar.length) {
+						var filterTop = $filterBar.offset().top - 24;
+						$('html, body').stop().animate({ scrollTop: filterTop }, 250);
+					}
+				});
+
+				applyFilter('family', 'all');
+
+			})();
+
+
+
 		// Poptrox.
 			$main.poptrox({
 				baseZIndex: 20000,
