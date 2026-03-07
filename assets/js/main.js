@@ -112,16 +112,19 @@
 
 			// Toggles.
 				$toggles
-					.removeAttr('href')
-					.css('cursor', 'pointer')
-					.on('click', function(event) {
+	.removeAttr('href')
+	.css('cursor', 'pointer')
+	.on('click', function(event) {
 
-						event.preventDefault();
-						event.stopPropagation();
+		event.preventDefault();
+		event.stopPropagation();
 
-						$this.trigger('---toggle');
+		$this.trigger('---toggle');
 
-					});
+		// Retire le focus persistant après clic pour garder un hover propre.
+		this.blur();
+
+	});
 
 		});
 
@@ -175,13 +178,19 @@
 			setProjectsToggleState(false);
 
 			$projectsToggle.on('click', function(event) {
-				event.preventDefault();
-				event.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
 
-				var isOpen = $galleryFilters.hasClass('is-collapsed');
-				setProjectsToggleState(isOpen);
-			});
-			
+	var isOpen = $galleryFilters.hasClass('is-collapsed');
+	setProjectsToggleState(isOpen);
+
+	this.blur();
+});
+
+$header.on('mouseup mouseleave', '.header-pill', function() {
+	this.blur();
+});
+
 		// Hide on scroll, show only when cursor is at the very top of the page.
 (function() {
   var HOVER_REVEAL_Y = 24; // px depuis le haut

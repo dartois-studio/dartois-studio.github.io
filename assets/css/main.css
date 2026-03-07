@@ -2152,51 +2152,30 @@ body {
 	list-style: none;
 }
 
-#header .header-icon {
-	border: 0;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	border-radius: 10px;
-	color: #111;
-	text-decoration: none;
-	background: transparent;
-	box-shadow: none;
-}
 
-#header .header-icon:hover {
-	background: rgba(0, 0, 0, 0.06);
-}
 
-#header .header-icon svg {
-	width: 22px;
-	height: 22px;
-}
+/* =========================
+   HEADER BUTTONS
+   ========================= */
 
-/* Boutons gauche : même logique visuelle que le burger */
-#header .header-side-left .header-pill {
+#header .header-pill {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
-
 	height: 44px;
+	min-width: 44px;
 	padding: 0;
 	margin: 0;
-
 	background: transparent;
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
 	outline: none;
-
-	color: #111;
+	color: #111 !important;
 	font: inherit;
 	font-size: 0.95rem;
 	font-weight: 500;
@@ -2205,44 +2184,59 @@ body {
 	text-transform: uppercase;
 	text-decoration: none;
 	white-space: nowrap;
-
 	cursor: pointer;
+	opacity: 1;
+	transition: opacity 0.2s ease;
 }
 
-#header .header-side-left .header-pill-icon,
-#header .header-side-left .header-pill-label,
-#header .header-side-left .header-pill i {
+#header .header-pill-icon,
+#header .header-pill-label,
+#header .header-pill i {
 	display: inline-flex;
 	align-items: center;
 	line-height: 1;
-	color: #111;
+	color: inherit;
 }
 
-#header .header-side-left .header-pill:hover,
-#header .header-side-left .header-pill:focus,
-#header .header-side-left .header-pill:active {
-	background: transparent;
+#header .header-menu-toggle,
+#header .header-menu-toggle.active,
+#header .header-menu-toggle:visited,
+#header .header-menu-toggle:focus,
+#header .header-menu-toggle:focus-visible,
+#header .header-menu-toggle:active {
+	background: transparent !important;
 	border: 0;
-	box-shadow: none;
-	outline: none;
-	color: #111;
+	box-shadow: none !important;
+	color: #111 !important;
+}
+
+#header .header-pill:hover,
+#header .header-pill:hover:focus,
+#header .header-pill:hover:focus-visible,
+#header .header-pill:hover:active {
+	background: transparent !important;
+	border: 0;
+	box-shadow: none !important;
+	color: #111 !important;
 	opacity: 0.65;
 }
 
-#header .header-side-left .header-pill:focus-visible {
-	outline: none;
-	box-shadow: none;
+#header .header-pill.active {
+	background: transparent !important;
+	box-shadow: none !important;
 }
 
-#header .header-side-left .header-projects-toggle.is-active,
-#header .header-side-left .header-projects-toggle.is-active .header-pill-icon,
-#header .header-side-left .header-projects-toggle.is-active .header-pill-label,
-#header .header-side-left .header-projects-toggle.is-active i {
-	color: #111;
-	background: transparent;
+#header .header-projects-toggle.is-active,
+#header .header-projects-toggle.is-active .header-pill-icon,
+#header .header-projects-toggle.is-active .header-pill-label,
+#header .header-projects-toggle.is-active i {
+	color: #111 !important;
+	background: transparent !important;
 	border: 0;
-	box-shadow: none;
+	box-shadow: none !important;
 }
+
+
 
 /* =========================
    CONTACT CARDS
@@ -2504,3 +2498,4 @@ body {
 		height: 36px;
 	}
 }
+
