@@ -2474,3 +2474,16 @@ body {
 		bottom: 1.5em;
 	}
 }
+
+/* Mobile : ne garder que les icônes dans les boutons du header */
+@media screen and (max-width: 736px) {
+
+  .header-pill-label {
+    display: none;
+  }
+
+  .header-pill {
+    padding: 0 0.9em;
+  }
+
+}
