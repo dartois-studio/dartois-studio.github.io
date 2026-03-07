@@ -28,13 +28,37 @@
 
 	<!-- Header -->
 	<header id="header">
-		<div class="brand">
-			<a href="index.html" class="brand-link">
-				<img src="images/dar-studio_transparent.png" alt="Dartois Studio logo" class="brand-logo" />
-				<span class="brand-name">DARTOIS STUDIO</span>
-			</a>
-		</div>
+	<div class="header-side header-side-left">
+		<button
+			type="button"
+			class="header-pill header-projects-toggle"
+			aria-controls="gallery-filters"
+			aria-expanded="false">
+			<span class="header-pill-icon header-folder-icon" aria-hidden="true">
+				<i class="fa-solid fa-folder"></i>
+			</span>
+			<span class="header-pill-label">Projets</span>
+		</button>
 
+		<button
+			type="button"
+			class="header-pill header-mix-toggle"
+			aria-label="Mix">
+			<span class="header-pill-icon" aria-hidden="true">
+				<i class="fa-solid fa-shuffle"></i>
+			</span>
+			<span class="header-pill-label">Mix !</span>
+		</button>
+	</div>
+
+	<div class="brand">
+		<a href="index.html" class="brand-link">
+			<img src="images/dar-studio_transparent.png" alt="Dartois Studio logo" class="brand-logo" />
+			<span class="brand-name">DARTOIS STUDIO</span>
+		</a>
+	</div>
+
+	<div class="header-side header-side-right">
 		<nav class="header-nav" aria-label="Menu">
 			<ul>
 				<li>
@@ -44,13 +68,14 @@
 				</li>
 			</ul>
 		</nav>
-	</header>
+	</div>
+</header>
 
 	<!-- Wrapper -->
 	<div id="wrapper">
 
 		<!-- Main -->
-<section id="gallery-filters" class="gallery-filters" aria-label="Filtres de la galerie">
+<section id="gallery-filters" class="gallery-filters is-collapsed" aria-label="Filtres de la galerie">
 			<button type="button" class="filter-chip is-active" data-filter-type="family" data-filter-value="all">Tout</button>
 			<button type="button" class="filter-chip" data-filter-type="family" data-filter-value="creas-graphiques">Créas graphiques</button>
 			<button type="button" class="filter-chip" data-filter-type="family" data-filter-value="merch">Merch</button>

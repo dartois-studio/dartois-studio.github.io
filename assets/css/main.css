@@ -2,9 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic");
 
 /*
-	Multiverse by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	Dartois Studio
 */
 
 @-moz-keyframes spinner {
@@ -2039,254 +2037,328 @@ input, select, textarea {
 		}
 
 /* MODIFS NEW GP */
-/* Zoom propre (ne casse pas le cover) */
+
+/* Zoom léger sur les vignettes */
 #main .thumb > a.image {
-  transition: transform 0.35s ease;
-  transform: scale(1);
-  will-change: transform;
+	transition: transform 0.35s ease;
+	transform: scale(1);
+	will-change: transform;
 }
 
 #main .thumb:hover > a.image {
-  transform: scale(1.05);
+	transform: scale(1.05);
 }
 
-/* Header custom (fond blanc, logo + titre à gauche, icône menu à droite) */
+/* Réserve la place du header fixe en haut */
 body {
-  padding: 5em 0 0 0; /* on libère de la place en haut (header fixed) */
+	padding: 5em 0 4em 0;
 }
+
+/* =========================
+   HEADER CUSTOM
+   ========================= */
 
 #header {
-  position: fixed;
-  top: 0;
-  bottom: auto;
-
-  height: 5em;
-  line-height: normal;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background: #ffffff;
-  padding: 0 1.5em;
-
-  z-index: 10002;
+	position: fixed;
+	top: 0;
+	bottom: auto;
+	left: 0;
+	width: 100%;
+	height: 5em;
+	padding: 0 1.5em;
+	background: #ffffff;
+	line-height: normal;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: opacity 0.25s ease, transform 0.25s ease;
+	will-change: opacity, transform;
+	z-index: 10002;
 }
 
-#header h1 { display: none; } /* au cas où ton ancien h1 traîne encore */
+#header.is-hidden {
+	opacity: 0;
+	transform: translateY(-100%);
+	pointer-events: none;
+}
+
+#header h1 {
+	display: none;
+}
+
+/* Logo centré réellement dans le header */
+#header .brand {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	pointer-events: auto;
+}
 
 #header .brand-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75em;
-  border: 0;
-  color: #111;
-  text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75em;
+	border: 0;
+	color: #111;
+	text-decoration: none;
 }
 
 #header .brand-logo {
-  height: 48px;
-  width: auto;
-  display: block;
+	height: 48px;
+	width: auto;
+	display: block;
 }
 
 #header .brand-name {
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  font-size: 1.25em;
-  color: #111;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	font-size: 1.25em;
+	color: #111;
+	white-space: nowrap;
 }
 
-#header .header-nav {
-  display: flex;
-  align-items: center;
-  height: 100%;
+/* Colonnes gauche / droite */
+#header .header-side-left,
+#header .header-side-right {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	z-index: 1;
 }
 
-#header .header-nav ul {
-  display: flex;
-  align-items: center;
-  height: 100%;
+#header .header-side-left {
+	gap: 1.25rem;
+	padding-left: 0.25rem;
 }
 
+#header .header-side-right {
+	justify-content: flex-end;
+}
+
+/* Menu burger */
+#header .header-nav,
+#header .header-nav ul,
 #header .header-nav li {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 #header .header-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#header .header-nav ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#header .header-icon {
-  border: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-
-  color: #111;
-  text-decoration: none;
+	border: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	color: #111;
+	text-decoration: none;
+	background: transparent;
+	box-shadow: none;
 }
 
 #header .header-icon:hover {
-  background: rgba(0, 0, 0, 0.06);
+	background: rgba(0, 0, 0, 0.06);
 }
 
-/* Taille de l’icône lucide */
 #header .header-icon svg {
-  width: 22px;
-  height: 22px;
+	width: 22px;
+	height: 22px;
 }
 
-/* Header: disparaît au scroll, réapparaît si souris en haut */
+/* Boutons gauche : même logique visuelle que le burger */
+#header .header-side-left .header-pill {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 
-body {
-  /* garde un footer, et laisse la place au header en haut */
-  padding: 5em 0 4em 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+
+	height: 44px;
+	padding: 0;
+	margin: 0;
+
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	outline: none;
+
+	color: #111;
+	font: inherit;
+	font-size: 0.95rem;
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
+	text-decoration: none;
+	white-space: nowrap;
+
+	cursor: pointer;
 }
 
-/* Assure que le header est bien en haut (ton template le met en bas par défaut) */
-#header {
-  top: 0;
-  bottom: auto;
-
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  will-change: opacity, transform;
+#header .header-side-left .header-pill-icon,
+#header .header-side-left .header-pill-label,
+#header .header-side-left .header-pill i {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+	color: #111;
 }
 
-/* État caché */
-#header.is-hidden {
-  opacity: 0;
-  transform: translateY(-100%);
-  pointer-events: none;
+#header .header-side-left .header-pill:hover,
+#header .header-side-left .header-pill:focus,
+#header .header-side-left .header-pill:active {
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	outline: none;
+	color: #111;
+	opacity: 0.65;
 }
 
-/* Contact cards (drawer footer) */
+#header .header-side-left .header-pill:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
+#header .header-side-left .header-projects-toggle.is-active,
+#header .header-side-left .header-projects-toggle.is-active .header-pill-icon,
+#header .header-side-left .header-projects-toggle.is-active .header-pill-label,
+#header .header-side-left .header-projects-toggle.is-active i {
+	color: #111;
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+}
+
+/* =========================
+   CONTACT CARDS
+   ========================= */
 
 .contact-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9em;
-  margin-top: 1.25em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.9em;
+	margin-top: 1.25em;
 }
 
 .contact-card {
-  border: 0;
-  text-decoration: none;
-
-  display: flex;
-  align-items: center;
-  gap: 1em;
-
-  padding: 0.95em 1.05em;
-  border-radius: 14px;
-
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
-
-  color: #ffffff !important;
-
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+	border: 0;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 1em;
+	padding: 0.95em 1.05em;
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.06);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+	color: #ffffff !important;
+	transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-card:hover {
-  background: rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
-  transform: translateY(-1px);
+	background: rgba(255, 255, 255, 0.09);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+	transform: translateY(-1px);
 }
 
 .contact-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255, 255, 255, 0.08);
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.08);
 }
 
 .contact-icon i {
-  font-size: 1.25em;
+	font-size: 1.25em;
 }
 
 .contact-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-  min-width: 0;
+	display: flex;
+	flex-direction: column;
+	line-height: 1.2;
+	min-width: 0;
 }
 
 .contact-title {
-  font-size: 0.95em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.85;
+	font-size: 0.95em;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	opacity: 0.85;
 }
 
 .contact-handle {
-  font-size: 1.05em;
-  font-weight: 400;
-  opacity: 0.95;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	font-size: 1.05em;
+	font-weight: 400;
+	opacity: 0.95;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .contact-arrow {
-  margin-left: auto;
-  opacity: 0.5;
+	margin-left: auto;
+	opacity: 0.5;
 }
 
 .contact-card:hover .contact-arrow {
-  opacity: 0.85;
+	opacity: 0.85;
 }
 
+/* =========================
+   FOOTER
+   ========================= */
 
+#footer .copyright {
+	color: #505051;
+	font-size: 0.9em;
+}
 
+#footer .copyright a {
+	color: inherit;
+}
 
-
-/* Footer */
-
-	#footer .copyright {
-		color: #505051;
-		font-size: 0.9em;
-	}
-
-		#footer .copyright a {
-			color: inherit;
-		}
-
-
-
-
-
-
-		/* Filtres galerie */
+/* =========================
+   FILTRES GALERIE
+   ========================= */
 
 .gallery-filters {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.65em;
-	padding: 1em 2.1875em 0.9em 2.1875em;
+	padding: 0.85em 2.1875em 0.75em 2.1875em;
 	background: #242629;
 	position: sticky;
-	top: 0;
+	top: 5em;
 	z-index: 1000;
+	overflow: hidden;
+	max-height: 12rem;
+	opacity: 1;
+	transition: max-height 0.28s ease, opacity 0.2s ease, padding 0.2s ease;
+}
+
+.gallery-filters.is-collapsed {
+	max-height: 0;
+	opacity: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	pointer-events: none;
 }
 
 .filter-chip,
@@ -2316,8 +2388,6 @@ body {
 	padding: 0.6em 0.85em;
 }
 
-
-
 .filter-chip:hover,
 .thumb-tag:hover,
 .filter-chip:focus-visible,
@@ -2333,6 +2403,21 @@ body {
 	background: rgba(255, 255, 255, 0.14);
 	border-color: rgba(255, 255, 255, 0.28);
 }
+
+.thumb-tag,
+.thumb-tag:hover,
+.thumb-tag:focus-visible {
+	border-bottom: 0;
+	text-decoration: none;
+}
+
+.thumb-is-hidden {
+	display: none !important;
+}
+
+/* =========================
+   CAPTIONS PROJETS
+   ========================= */
 
 #main .thumb > h2 {
 	display: none;
@@ -2352,27 +2437,53 @@ body {
 	line-height: 1.4;
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
 
-
-
-
-.thumb-tag,
-.thumb-tag:hover,
-.thumb-tag:focus-visible {
-	border-bottom: 0;
-	text-decoration: none;
-}
-
-.thumb-is-hidden {
-	display: none !important;
+@media screen and (max-width: 980px) {
+	#header .brand-name {
+		font-size: 1.05em;
+		letter-spacing: 0.1em;
+	}
 }
 
 @media screen and (max-width: 736px) {
-	.gallery-filters {
-		padding: 4.65em 1.25em 0.75em 1.25em;
-		gap: 0.45em;
+	body {
+		padding: 4.5em 0 4em 0;
 	}
 
+	#header {
+		height: 4.5em;
+		padding: 0 1em;
+	}
+
+	#header .brand-link {
+		gap: 0.5em;
+	}
+
+	#header .brand-logo {
+		height: 40px;
+	}
+
+	#header .brand-name {
+		font-size: 0.95em;
+		letter-spacing: 0.06em;
+	}
+
+	#header .header-side-left {
+		gap: 0.9rem;
+	}
+
+	#header .header-side-left .header-pill {
+		font-size: 0.82rem;
+	}
+
+	.gallery-filters {
+		top: 4.5em;
+		padding: 0.7em 1.25em 0.65em 1.25em;
+		gap: 0.45em;
+	}
 
 	#main .thumb > .thumb-caption {
 		left: 1.5em;

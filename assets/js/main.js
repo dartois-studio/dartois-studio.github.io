@@ -157,7 +157,31 @@
 
 	// Header.
 		var $header = $('#header');
+		// Toggle de la zone filtres "Projets".
+			var $projectsToggle = $('.header-projects-toggle'),
+				$galleryFilters = $('#gallery-filters'),
+				$folderIcon = $projectsToggle.find('.header-folder-icon i');
 
+			function setProjectsToggleState(isOpen) {
+				$galleryFilters.toggleClass('is-collapsed', !isOpen);
+				$projectsToggle.toggleClass('is-active', isOpen);
+				$projectsToggle.attr('aria-expanded', isOpen ? 'true' : 'false');
+
+				$folderIcon
+					.toggleClass('fa-folder', !isOpen)
+					.toggleClass('fa-folder-open', isOpen);
+			}
+
+			setProjectsToggleState(false);
+
+			$projectsToggle.on('click', function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				var isOpen = $galleryFilters.hasClass('is-collapsed');
+				setProjectsToggleState(isOpen);
+			});
+			
 		// Hide on scroll, show only when cursor is at the very top of the page.
 (function() {
   var HOVER_REVEAL_Y = 24; // px depuis le haut
