@@ -2341,14 +2341,14 @@ body {
 .gallery-filters {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 0.65em;
-	padding: 0.85em 2.1875em 0.75em 2.1875em;
+	gap: 0.55em;
+	padding: 0.55em 2.1875em 0.5em 2.1875em;
 	background: #242629;
 	position: sticky;
 	top: 5em;
 	z-index: 1000;
 	overflow: hidden;
-	max-height: 12rem;
+	max-height: 8rem;
 	opacity: 1;
 	transition: max-height 0.28s ease, opacity 0.2s ease, padding 0.2s ease;
 }
@@ -2361,8 +2361,7 @@ body {
 	pointer-events: none;
 }
 
-.filter-chip,
-.thumb-tag {
+.filter-chip {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	-ms-appearance: none;
@@ -2376,39 +2375,22 @@ body {
 	font-size: 0.72em;
 	letter-spacing: 0.08em;
 	line-height: 1;
-	padding: 0.72em 1.2em;
+	padding: 0.58em 1.05em;
 	text-transform: uppercase;
 	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
-.thumb-tag {
-	position: relative;
-	z-index: 3;
-	font-size: 0.62em;
-	padding: 0.6em 0.85em;
-}
-
 .filter-chip:hover,
-.thumb-tag:hover,
-.filter-chip:focus-visible,
-.thumb-tag:focus-visible {
+.filter-chip:focus-visible {
 	background: rgba(255, 255, 255, 0.1);
 	border-color: rgba(255, 255, 255, 0.24);
 	color: #ffffff;
 	outline: none;
 }
 
-.filter-chip.is-active,
-.thumb-tag.is-active {
+.filter-chip.is-active {
 	background: rgba(255, 255, 255, 0.14);
 	border-color: rgba(255, 255, 255, 0.28);
-}
-
-.thumb-tag,
-.thumb-tag:hover,
-.thumb-tag:focus-visible {
-	border-bottom: 0;
-	text-decoration: none;
 }
 
 .thumb-is-hidden {
@@ -2481,8 +2463,9 @@ body {
 
 	.gallery-filters {
 		top: 4.5em;
-		padding: 0.7em 1.25em 0.65em 1.25em;
-		gap: 0.45em;
+		padding: 0.55em 1.25em 0.5em 1.25em;
+		gap: 0.4em;
+		max-height: 10rem;
 	}
 
 	#main .thumb > .thumb-caption {

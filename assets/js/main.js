@@ -299,16 +299,12 @@
 		var html = items.map(function(project) {
 			var tags = Array.isArray(project.tags) ? project.tags : [];
 			var tagValues = tags.map(function(tag) { return tag.value; }).join(',');
-			var tagButtons = tags.map(function(tag) {
-				return '<button type="button" class="thumb-tag" data-filter-type="tag" data-filter-value="' + escapeHtml(tag.value) + '">' + escapeHtml(tag.label) + '</button>';
-			}).join('');
 
 			return [
 				'<article class="thumb" data-family="' + escapeHtml(project.family) + '" data-tags="' + escapeHtml(tagValues) + '">',
 					'<a href="' + escapeHtml(project.full) + '" class="image"><img src="' + escapeHtml(project.thumb) + '" alt="' + escapeHtml(project.alt || project.title) + '" /></a>',
 					'<div class="thumb-caption">',
 						'<h2>' + escapeHtml(project.title) + '</h2>',
-						'<div class="thumb-tags" aria-label="Tags du projet">' + tagButtons + '</div>',
 					'</div>',
 					'<p>' + escapeHtml(project.description || '') + '</p>',
 				'</article>'
@@ -321,47 +317,45 @@
 	function initGalleryFilters($container) {
 		var $filterBar = $('#gallery-filters');
 		var state = {
-			family: 'all',
-			tag: null
+			filterType: 'family',
+			filterValue: 'all'
 		};
 
 		if (!$filterBar.length || !$container.length)
 			return;
 
+		function projectMatchesFilter($thumb, filterType, filterValue) {
+			if (filterValue === 'all')
+				return true;
+
+			if (filterType === 'family')
+				return $thumb.data('family') === filterValue;
+
+			if (filterType === 'tag') {
+				var tags = String($thumb.data('tags') || '').split(',').filter(Boolean);
+				return tags.indexOf(filterValue) !== -1;
+			}
+
+			return true;
+		}
+
 		function applyFilters() {
 			$container.children('.thumb').each(function() {
 				var $thumb = $(this);
-				var family = $thumb.data('family');
-				var tags = String($thumb.data('tags') || '').split(',').filter(Boolean);
-				var familyMatch = state.family === 'all' || family === state.family;
-				var tagMatch = !state.tag || tags.indexOf(state.tag) !== -1;
-
-				$thumb.toggleClass('thumb-is-hidden', !(familyMatch && tagMatch));
+				var isVisible = projectMatchesFilter($thumb, state.filterType, state.filterValue);
+				$thumb.toggleClass('thumb-is-hidden', !isVisible);
 			});
 
 			$filterBar.find('.filter-chip').each(function() {
 				var $button = $(this);
-				$button.toggleClass('is-active', $button.data('filter-value') === state.family);
-			});
-
-			$container.find('.thumb-tag').each(function() {
-				var $button = $(this);
-				$button.toggleClass('is-active', !!state.tag && $button.data('filter-value') === state.tag);
+				var isActive = $button.data('filter-type') === state.filterType && $button.data('filter-value') === state.filterValue;
+				$button.toggleClass('is-active', isActive);
 			});
 		}
 
 		$filterBar.on('click', '.filter-chip', function() {
-			state.family = $(this).data('filter-value');
-			state.tag = null;
-			applyFilters();
-		});
-
-		$container.on('click', '.thumb-tag', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-
-			var nextTag = $(this).data('filter-value');
-			state.tag = state.tag === nextTag ? null : nextTag;
+			state.filterType = $(this).data('filter-type');
+			state.filterValue = $(this).data('filter-value');
 			applyFilters();
 		});
 

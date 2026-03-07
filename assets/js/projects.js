@@ -88,7 +88,7 @@ window.projects = [
   {
     "title": "Écharpe Tissée HD LENS (chevrons) - 50 exemplaires",
     "description": "Tous droits reservés - Dartois / Guillaume Plaisant",
-    "family": "merch",
+    "family": "scarf",
     "full": "images/fulls/06.jpg",
     "thumb": "images/thumbs/06.jpg",
     "alt": "Écharpe Tissée HD LENS (chevrons) - 50 exemplaires",
