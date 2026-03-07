@@ -393,15 +393,28 @@ function initGalleryFilters($container) {
 		});
 	}
 
-	function renderFilteredProjects() {
+		function renderFilteredProjects() {
 		renderProjects($container, galleryState.filteredProjects);
 		initThumbBackgrounds($container);
+		initGalleryLightbox($container);
 	}
 
 	function applyFilters() {
 		updateFilteredProjects();
 		renderFilteredProjects();
 		updateFilterButtons();
+	}
+
+	function animateMix(callback) {
+		$container.addClass('is-mixing');
+
+		window.setTimeout(function() {
+			callback();
+
+			window.setTimeout(function() {
+				$container.removeClass('is-mixing');
+			}, 90);
+		}, 60);
 	}
 
 	function mixVisibleProjects() {
@@ -412,6 +425,7 @@ function initGalleryFilters($container) {
 				galleryState.filterValue
 			);
 		});
+
 		var shuffledProjects;
 		var shuffledIndex = 0;
 
@@ -439,11 +453,14 @@ function initGalleryFilters($container) {
 		applyFilters();
 	});
 
-	$mixToggle.on('click', function(event) {
+		$mixToggle.on('click', function(event) {
 		event.preventDefault();
 		event.stopPropagation();
 
-		mixVisibleProjects();
+		animateMix(function() {
+			mixVisibleProjects();
+		});
+
 		this.blur();
 	});
 

@@ -2041,13 +2041,24 @@ input, select, textarea {
 
 /* Zoom léger sur les vignettes */
 #main .thumb > a.image {
-	transition: transform 0.35s ease;
+	transition: transform 0.35s ease, opacity 0.6s ease;
 	transform: scale(1);
-	will-change: transform;
+	opacity: 1;
+	will-change: transform, opacity;
+}
+
+#main.is-mixing .thumb > a.image {
+	opacity: 0.4;
 }
 
 #main .thumb:hover > a.image {
 	transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#main .thumb > a.image {
+		transition: transform 0.35s ease;
+	}
 }
 
 /* Réserve la place du header fixe en haut */
