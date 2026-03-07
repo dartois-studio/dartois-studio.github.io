@@ -154,6 +154,7 @@ input, select, textarea {
 
 	html {
 		box-sizing: border-box;
+		scrollbar-gutter: stable;
 	}
 
 	*, *:before, *:after {
