@@ -257,160 +257,189 @@
 	// Main.
 		var $main = $('#main');
 
+		// Thumbs.
+			$main.children('.thumb').each(function() {
 
-	// Galerie : génération centralisée des projets.
-	function escapeHtml(value) {
-		return String(value)
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;')
-			.replace(/\"/g, '&quot;')
-			.replace(/'/g, '&#039;');
-	}
+				var	$this = $(this),
+					$image = $this.find('.image'), $image_img = $image.children('img'),
+					x;
 
-	function renderProjects($container, items) {
-		if (!$container.length || !Array.isArray(items))
-			return;
+				// No image? Bail.
+					if ($image.length == 0)
+						return;
 
-		var html = items.map(function(project) {
-			var tags = Array.isArray(project.tags) ? project.tags : [];
-			var tagValues = tags.map(function(tag) { return tag.value; }).join(',');
-			var tagButtons = tags.map(function(tag) {
-				return '<button type="button" class="thumb-tag" data-filter-type="tag" data-filter-value="' + escapeHtml(tag.value) + '">' + escapeHtml(tag.label) + '</button>';
-			}).join('');
+				// Image.
+				// This sets the background of the "image" <span> to the image pointed to by its child
+				// <img> (which is then hidden). Gives us way more flexibility.
 
-			return [
-				'<article class="thumb" data-family="' + escapeHtml(project.family) + '" data-tags="' + escapeHtml(tagValues) + '">',
-					'<a href="' + escapeHtml(project.full) + '" class="image"><img src="' + escapeHtml(project.thumb) + '" alt="' + escapeHtml(project.alt || project.title) + '" /></a>',
-					'<div class="thumb-caption">',
-						'<h2>' + escapeHtml(project.title) + '</h2>',
-						'<div class="thumb-tags" aria-label="Tags du projet">' + tagButtons + '</div>',
-					'</div>',
-					'<p>' + escapeHtml(project.description || '') + '</p>',
-				'</article>'
-			].join('');
-		}).join('');
+					// Set background.
+						$image.css('background-image', 'url(' + $image_img.attr('src') + ')');
 
-		$container.html(html);
-	}
+					// Set background position.
+						if (x = $image_img.data('position'))
+							$image.css('background-position', x);
 
-	function initGalleryFilters($container) {
-		var $filterBar = $('#gallery-filters');
-		var state = {
-			family: 'all',
-			tag: null
-		};
+					// Hide original img.
+						$image_img.hide();
 
-		if (!$filterBar.length || !$container.length)
-			return;
-
-		function applyFilters() {
-			$container.children('.thumb').each(function() {
-				var $thumb = $(this);
-				var family = $thumb.data('family');
-				var tags = String($thumb.data('tags') || '').split(',').filter(Boolean);
-				var familyMatch = state.family === 'all' || family === state.family;
-				var tagMatch = !state.tag || tags.indexOf(state.tag) !== -1;
-
-				$thumb.toggleClass('thumb-is-hidden', !(familyMatch && tagMatch));
 			});
 
-			$filterBar.find('.filter-chip').each(function() {
-				var $button = $(this);
-				$button.toggleClass('is-active', $button.data('filter-value') === state.family);
-			});
+		// Filters.
+			(function() {
 
-			$container.find('.thumb-tag').each(function() {
-				var $button = $(this);
-				$button.toggleClass('is-active', !!state.tag && $button.data('filter-value') === state.tag);
-			});
-		}
+				var $filterBar = $('#gallery-filters');
 
-		$filterBar.on('click', '.filter-chip', function() {
-			state.family = $(this).data('filter-value');
-			state.tag = null;
-			applyFilters();
-		});
+				if ($filterBar.length === 0 || $main.length === 0)
+					return;
 
-		$container.on('click', '.thumb-tag', function(event) {
-			event.preventDefault();
-			event.stopPropagation();
+				var $projects = $main.children('.thumb'),
+					$filterButtons = $filterBar.find('[data-filter-type][data-filter-value]'),
+					activeFilter = {
+						type: 'family',
+						value: 'all'
+					};
 
-			var nextTag = $(this).data('filter-value');
-			state.tag = state.tag === nextTag ? null : nextTag;
-			applyFilters();
-		});
+				function normalizeValue(value) {
+					return String(value || '').toLowerCase().trim();
+				}
 
-		applyFilters();
-	}
+				function getProjectTags($project) {
+					var rawTags = normalizeValue($project.attr('data-tags'));
 
-	function initThumbBackgrounds($container) {
-		$container.children('.thumb').each(function() {
+					if (!rawTags)
+						return [];
 
-			var	$this = $(this),
-				$image = $this.find('.image'), $image_img = $image.children('img'),
-				x;
+					return rawTags.split(',').map(function(tag) {
+						return normalizeValue(tag);
+					});
+				}
 
-			if ($image.length == 0)
-				return;
+				function projectMatches($project, filter) {
+					var family = normalizeValue($project.attr('data-family')),
+						tags = getProjectTags($project);
 
-			$image.css('background-image', 'url(' + $image_img.attr('src') + ')');
+					if (filter.value === 'all')
+						return true;
 
-			if (x = $image_img.data('position'))
-				$image.css('background-position', x);
+					if (filter.type === 'family')
+						return family === filter.value;
 
-			$image_img.hide();
+					if (filter.type === 'tag')
+						return tags.indexOf(filter.value) !== -1;
 
-		});
-	}
+					return true;
+				}
 
-	function initGalleryLightbox($container) {
-		$container.poptrox({
-			baseZIndex: 20000,
-			caption: function($a) {
+				function updateActiveStates() {
+					$filterButtons.removeClass('is-active');
 
-				var s = '';
+					$filterButtons.each(function() {
+						var $button = $(this),
+							type = normalizeValue($button.attr('data-filter-type')),
+							value = normalizeValue($button.attr('data-filter-value'));
 
-				$a.nextAll().each(function() {
-					s += this.outerHTML;
+						if (type === activeFilter.type && value === activeFilter.value)
+							$button.addClass('is-active');
+
+						if (activeFilter.value === 'all' && value === 'all')
+							$button.addClass('is-active');
+					});
+
+					$main.find('.thumb-tag').removeClass('is-active');
+
+					if (activeFilter.type === 'tag') {
+						$main.find('.thumb-tag[data-filter-value="' + activeFilter.value + '"]').addClass('is-active');
+					}
+				}
+
+				function applyFilter(type, value) {
+					activeFilter = {
+						type: normalizeValue(type),
+						value: normalizeValue(value)
+					};
+
+					if (!activeFilter.value)
+						activeFilter.value = 'all';
+
+					if (activeFilter.value === 'all')
+						activeFilter.type = 'family';
+
+					$projects.each(function() {
+						var $project = $(this),
+							isVisible = projectMatches($project, activeFilter);
+
+						$project.toggleClass('thumb-is-hidden', !isVisible);
+					});
+
+					updateActiveStates();
+				}
+
+				$filterBar.on('click', '[data-filter-type][data-filter-value]', function() {
+					var $button = $(this);
+
+					applyFilter($button.attr('data-filter-type'), $button.attr('data-filter-value'));
 				});
 
-				return s;
+				$main.on('click', '.thumb-tag[data-filter-type="tag"][data-filter-value]', function(event) {
+					event.preventDefault();
+					event.stopPropagation();
 
-			},
-			fadeSpeed: 300,
-			onPopupClose: function() { $body.removeClass('modal-active'); },
-			onPopupOpen: function() { $body.addClass('modal-active'); },
-			overlayOpacity: 0,
-			popupCloserText: '',
-			popupHeight: 150,
-			popupLoaderText: '',
-			popupSpeed: 300,
-			popupWidth: 150,
-			selector: '.thumb > a.image',
-			usePopupCaption: true,
-			usePopupCloser: true,
-			usePopupDefaultStyling: false,
-			usePopupForceClose: true,
-			usePopupLoader: true,
-			usePopupNav: true,
-			windowMargin: 50
-		});
+					var $tag = $(this);
 
-		breakpoints.on('<=xsmall', function() {
-			if ($container[0] && $container[0]._poptrox)
-				$container[0]._poptrox.windowMargin = 0;
-		});
+					applyFilter('tag', $tag.attr('data-filter-value'));
 
-		breakpoints.on('>xsmall', function() {
-			if ($container[0] && $container[0]._poptrox)
-				$container[0]._poptrox.windowMargin = 50;
-		});
-	}
+					if ($filterBar.length) {
+						var filterTop = $filterBar.offset().top - 24;
+						$('html, body').stop().animate({ scrollTop: filterTop }, 250);
+					}
+				});
 
-		renderProjects($main, window.projects || []);
-		initThumbBackgrounds($main);
-		initGalleryFilters($main);
-		initGalleryLightbox($main);
+				applyFilter('family', 'all');
+
+			})();
+
+
+
+		// Poptrox.
+			$main.poptrox({
+				baseZIndex: 20000,
+				caption: function($a) {
+
+					var s = '';
+
+					$a.nextAll().each(function() {
+						s += this.outerHTML;
+					});
+
+					return s;
+
+				},
+				fadeSpeed: 300,
+				onPopupClose: function() { $body.removeClass('modal-active'); },
+				onPopupOpen: function() { $body.addClass('modal-active'); },
+				overlayOpacity: 0,
+				popupCloserText: '',
+				popupHeight: 150,
+				popupLoaderText: '',
+				popupSpeed: 300,
+				popupWidth: 150,
+				selector: '.thumb > a.image',
+				usePopupCaption: true,
+				usePopupCloser: true,
+				usePopupDefaultStyling: false,
+				usePopupForceClose: true,
+				usePopupLoader: true,
+				usePopupNav: true,
+				windowMargin: 50
+			});
+
+			// Hack: Set margins to 0 when 'xsmall' activates.
+				breakpoints.on('<=xsmall', function() {
+					$main[0]._poptrox.windowMargin = 0;
+				});
+
+				breakpoints.on('>xsmall', function() {
+					$main[0]._poptrox.windowMargin = 50;
+				});
 
 })(jQuery);

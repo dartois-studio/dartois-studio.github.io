@@ -2282,7 +2282,7 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.65em;
-	padding: 5.1em 2.1875em 0.9em 2.1875em;
+	padding: 1em 2.1875em 0.9em 2.1875em;
 	background: #242629;
 	position: sticky;
 	top: 0;
@@ -2308,6 +2308,15 @@ body {
 	text-transform: uppercase;
 	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
+
+.thumb-tag {
+	position: relative;
+	z-index: 3;
+	font-size: 0.62em;
+	padding: 0.6em 0.85em;
+}
+
+
 
 .filter-chip:hover,
 .thumb-tag:hover,
@@ -2343,20 +2352,9 @@ body {
 	line-height: 1.4;
 }
 
-.thumb-tag {
-	position: relative;
-	z-index: 3;
-	font-size: 0.62em;
-	padding: 0.6em 0.85em;
-}
 
 
-.thumb-tag {
-	position: relative;
-	z-index: 3;
-	font-size: 0.62em;
-	padding: 0.58em 1em;
-}
+
 
 .thumb-tag,
 .thumb-tag:hover,
