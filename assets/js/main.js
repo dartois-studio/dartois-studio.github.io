@@ -323,53 +323,132 @@ $header.on('mouseup mouseleave', '.header-pill', function() {
 		$container.html(html);
 	}
 
-	function initGalleryFilters($container) {
-		var $filterBar = $('#gallery-filters');
-		var state = {
-			filterType: 'family',
-			filterValue: 'all'
-		};
+function initGalleryFilters($container) {
+	var $filterBar = $('#gallery-filters');
+	var $mixToggle = $('.header-mix-toggle');
+	var galleryState = {
+		allProjects: Array.isArray(window.projects) ? window.projects.slice() : [],
+		currentOrder: Array.isArray(window.projects) ? window.projects.slice() : [],
+		filteredProjects: [],
+		filterType: 'family',
+		filterValue: 'all'
+	};
 
-		if (!$filterBar.length || !$container.length)
+	if (!$filterBar.length || !$container.length)
+		return;
+
+	function projectMatchesFilter(project, filterType, filterValue) {
+		var tags;
+
+		if (filterValue === 'all')
+			return true;
+
+		if (filterType === 'family')
+			return project.family === filterValue;
+
+		if (filterType === 'tag') {
+			tags = Array.isArray(project.tags) ? project.tags : [];
+			return tags.some(function(tag) {
+				return tag && tag.value === filterValue;
+			});
+		}
+
+		return true;
+	}
+
+	function shuffleArray(items) {
+		var shuffled = items.slice();
+		var i;
+		var j;
+		var temp;
+
+		for (i = shuffled.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			temp = shuffled[i];
+			shuffled[i] = shuffled[j];
+			shuffled[j] = temp;
+		}
+
+		return shuffled;
+	}
+
+	function updateFilteredProjects() {
+		galleryState.filteredProjects = galleryState.currentOrder.filter(function(project) {
+			return projectMatchesFilter(
+				project,
+				galleryState.filterType,
+				galleryState.filterValue
+			);
+		});
+	}
+
+	function updateFilterButtons() {
+		$filterBar.find('.filter-chip').each(function() {
+			var $button = $(this);
+			var isActive =
+				$button.data('filter-type') === galleryState.filterType &&
+				$button.data('filter-value') === galleryState.filterValue;
+
+			$button.toggleClass('is-active', isActive);
+		});
+	}
+
+	function renderFilteredProjects() {
+		renderProjects($container, galleryState.filteredProjects);
+		initThumbBackgrounds($container);
+	}
+
+	function applyFilters() {
+		updateFilteredProjects();
+		renderFilteredProjects();
+		updateFilterButtons();
+	}
+
+	function mixVisibleProjects() {
+		var visibleProjects = galleryState.currentOrder.filter(function(project) {
+			return projectMatchesFilter(
+				project,
+				galleryState.filterType,
+				galleryState.filterValue
+			);
+		});
+		var shuffledProjects;
+		var shuffledIndex = 0;
+
+		if (visibleProjects.length < 2)
 			return;
 
-		function projectMatchesFilter($thumb, filterType, filterValue) {
-			if (filterValue === 'all')
-				return true;
+		shuffledProjects = shuffleArray(visibleProjects);
 
-			if (filterType === 'family')
-				return $thumb.data('family') === filterValue;
-
-			if (filterType === 'tag') {
-				var tags = String($thumb.data('tags') || '').split(',').filter(Boolean);
-				return tags.indexOf(filterValue) !== -1;
+		galleryState.currentOrder = galleryState.currentOrder.map(function(project) {
+			if (projectMatchesFilter(project, galleryState.filterType, galleryState.filterValue)) {
+				var nextProject = shuffledProjects[shuffledIndex];
+				shuffledIndex += 1;
+				return nextProject;
 			}
 
-			return true;
-		}
-
-		function applyFilters() {
-			$container.children('.thumb').each(function() {
-				var $thumb = $(this);
-				var isVisible = projectMatchesFilter($thumb, state.filterType, state.filterValue);
-				$thumb.toggleClass('thumb-is-hidden', !isVisible);
-			});
-
-			$filterBar.find('.filter-chip').each(function() {
-				var $button = $(this);
-				var isActive = $button.data('filter-type') === state.filterType && $button.data('filter-value') === state.filterValue;
-				$button.toggleClass('is-active', isActive);
-			});
-		}
-
-		$filterBar.on('click', '.filter-chip', function() {
-			state.filterType = $(this).data('filter-type');
-			state.filterValue = $(this).data('filter-value');
-			applyFilters();
+			return project;
 		});
 
 		applyFilters();
 	}
+
+	$filterBar.on('click', '.filter-chip', function() {
+		galleryState.filterType = $(this).data('filter-type');
+		galleryState.filterValue = $(this).data('filter-value');
+		applyFilters();
+	});
+
+	$mixToggle.on('click', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+
+		mixVisibleProjects();
+		this.blur();
+	});
+
+	applyFilters();
+}
 
 	function initThumbBackgrounds($container) {
 		$container.children('.thumb').each(function() {
