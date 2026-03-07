@@ -1067,7 +1067,7 @@ input, select, textarea {
 		background: rgba(36, 38, 41, 0.975);
 		 bottom: 0; 
 		left: 0;
-		max-height: calc(80vh - 4em);
+		max-height: calc(95vh - 4em);
 		overflow-y: auto;
 		position: fixed;
 		width: 100%;
