@@ -2475,15 +2475,32 @@ body {
 	}
 }
 
-/* Mobile : ne garder que les icônes dans les boutons du header */
 @media screen and (max-width: 736px) {
 
-  .header-pill-label {
-    display: none;
-  }
+	#header {
+		padding: 0 0.75em;
+	}
 
-  .header-pill {
-    padding: 0 0.9em;
-  }
+	#header .header-side-left {
+		gap: 0.35rem;
+	}
 
+	#header .header-side-left .header-pill-label {
+		display: none !important;
+	}
+
+	#header .header-side-left .header-pill {
+		width: 44px;
+		min-width: 44px;
+		padding: 0;
+		gap: 0;
+	}
+
+	#header .brand-name {
+		display: none;
+	}
+
+	#header .brand-logo {
+		height: 36px;
+	}
 }
