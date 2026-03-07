@@ -2351,7 +2351,7 @@ body {
 	padding: 0.55em 2.1875em 0.5em 2.1875em;
 	background: #242629;
 	position: sticky;
-	top: 5em;
+	top: 0;
 	z-index: 1000;
 	overflow: hidden;
 	max-height: 8rem;
